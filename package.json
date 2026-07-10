@@ -1,0 +1,25 @@
+{
+  "name": "my-ivr-system",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.22.2",
+    "twilio": "^6.0.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AliasElFlaco/My-IVR-System.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AliasElFlaco/My-IVR-System/issues"
+  },
+  "homepage": "https://github.com/AliasElFlaco/My-IVR-System#readme",
+  "description": ""
+}
