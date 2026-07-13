@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🛸 IVR System - Cyber Control Panel</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <main class="matrix-container">
+      <header>
+        <h1 class="neon-text">IVR CYBER <span>SYSTEM</span></h1>
+        <p class="subtitle">Interactive Voice Response Platform & Validator</p>
+      </header>
+
+      <section class="glass-panel">
+        <div class="panel-header">
+          <span class="status-dot pulsing"></span>
+          <p>SYSTEM STATUS: ONLINE</p>
+        </div>
+
+        <div class="simulator-display">
+          <div id="terminal-text" class="terminal-text">
+            [SYSTEM] Ready for deployment. Click a button to test the IVR
+            pipeline flow...
+          </div>
+        </div>
+
+        <!-- Botones con efecto cristalino y líquido por defecto -->
+        <div class="action-zone">
+          <button id="btn-iniciar" class="btn-liquid-crystal">
+            <span>INICIAR LLAMADA (WEBHOOK)</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Conexión modular estricta -->
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
