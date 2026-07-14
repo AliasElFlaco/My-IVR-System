@@ -8,10 +8,13 @@ const statusDot = document.getElementById("status-dot");
 const statusText = document.getElementById("status-text");
 const keypadButtons = document.querySelectorAll(".key-btn");
 
-// LISTA DE CONTACTOS
+// LISTA DE CONTACTOS Y CONTROLES CORREGIDOS
 const phoneInput = document.getElementById("phone-input");
 const btnAddNumber = document.getElementById("btn-add-number");
 const numbersList = document.getElementById("numbers-list");
+
+// METRICAS
+const countAns = document.getElementById("count-ans");
 
 // ESTADO DE LA APLICACIÓN
 let activeCall = false;
@@ -47,13 +50,10 @@ function toggleKeypad(enable) {
 
 // REPRODUCTOR DE VOZ (SÍNTESIS DE VOZ)
 function hablar(texto) {
-  // Si hay alguna lectura en curso, la detenemos
   window.speechSynthesis.cancel();
-
   const utterance = new SpeechSynthesisUtterance(texto);
-  utterance.lang = "en-US"; // El IVR está diseñado en inglés
-  utterance.rate = 1.0; // Velocidad normal
-
+  utterance.lang = "en-US";
+  utterance.rate = 1.0;
   window.speechSynthesis.speak(utterance);
 }
 
@@ -64,6 +64,10 @@ async function iniciarLlamada() {
   const destination = selectedNumber || "Test Line";
   updateTerminal(`Dialing to: ${destination}...`, "system");
 
+  // Simula sumar uno al contador de contestadas cuando conecta
+  let currentAns = parseInt(countAns.textContent.replace(",", ""));
+  countAns.textContent = (currentAns + 1).toLocaleString();
+
   try {
     const response = await fetch("/api/ivr/iniciar", { method: "POST" });
     if (response.ok) {
@@ -71,7 +75,7 @@ async function iniciarLlamada() {
       const parsed = parseXmlToJson(xml);
       if (parsed.say) {
         updateTerminal(parsed.say, "ivr");
-        hablar(parsed.say); // Hace sonar el IVR en tus bocinas
+        hablar(parsed.say);
       }
     } else {
       updateTerminal(`Call dropped. Code: ${response.status}`, "system");
@@ -85,7 +89,7 @@ async function iniciarLlamada() {
 
 function colgarLlamada() {
   activeCall = false;
-  window.speechSynthesis.cancel(); // Silencia la voz inmediatamente
+  window.speechSynthesis.cancel();
   updateStatus("idle");
   updateTerminal("Call ended. System returned to standby.", "system");
 }
@@ -97,7 +101,6 @@ async function enviarDigito(digito) {
   updateTerminal(`DTMF tone sent: Key [${digito}]`, "system");
 
   try {
-    // Hacemos el POST de simulación con el formato que espera nuestro ivrController
     const response = await fetch("/api/ivr/procesar-seleccion", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -109,7 +112,7 @@ async function enviarDigito(digito) {
       const parsed = parseXmlToJson(xml);
       if (parsed.say) {
         updateTerminal(parsed.say, "ivr");
-        hablar(parsed.say); // Habla la siguiente instrucción del flujo
+        hablar(parsed.say);
       }
     }
   } catch (err) {
@@ -117,14 +120,28 @@ async function enviarDigito(digito) {
   }
 }
 
-// MANEJO DE CONTACTOS OUTBOUND
+// GESTIÓN DINÁMICA DE CONTACTOS (CORREGIDA)
 function renderNumbers() {
   numbersList.innerHTML = "";
   savedNumbers.forEach((num, index) => {
     const li = document.createElement("li");
-    li.innerHTML = `<span>📱 ${num}</span> <button class="btn-delete" data-index="${index}">✖</button>`;
-    if (selectedNumber === num) li.classList.add("selected");
 
+    const numSpan = document.createElement("span");
+    numSpan.textContent = `📱 ${num}`;
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn-delete";
+    delBtn.textContent = "✖";
+    delBtn.setAttribute("data-index", index);
+
+    li.appendChild(numSpan);
+    li.appendChild(delBtn);
+
+    if (selectedNumber === num) {
+      li.classList.add("selected");
+    }
+
+    // Selección de número al hacer clic
     li.addEventListener("click", (e) => {
       if (e.target.classList.contains("btn-delete")) return;
       selectedNumber = num;
@@ -132,16 +149,17 @@ function renderNumbers() {
       updateTerminal(`Selected target: ${num}. Press CALL to dial.`, "system");
     });
 
-    numbersList.appendChild(li);
-  });
-
-  document.querySelectorAll(".btn-delete").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const index = e.target.getAttribute("data-index");
-      if (savedNumbers[index] === selectedNumber) selectedNumber = null;
+    // Eliminar número
+    delBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (savedNumbers[index] === selectedNumber) {
+        selectedNumber = null;
+      }
       savedNumbers.splice(index, 1);
       renderNumbers();
     });
+
+    numbersList.appendChild(li);
   });
 }
 
@@ -149,12 +167,22 @@ function renderNumbers() {
 btnLlamar.addEventListener("click", iniciarLlamada);
 btnColgar.addEventListener("click", colgarLlamada);
 
+// AGREGAR NÚMERO (CORREGIDO DE RAÍZ)
 btnAddNumber.addEventListener("click", () => {
   const val = phoneInput.value.trim();
   if (val) {
     savedNumbers.push(val);
     phoneInput.value = "";
     renderNumbers();
+    updateTerminal(`Added and synchronized: ${val}`, "system");
+  } else {
+    updateTerminal("Please enter a valid number.", "system");
+  }
+});
+
+phoneInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    btnAddNumber.click();
   }
 });
 

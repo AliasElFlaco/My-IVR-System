@@ -10,57 +10,100 @@
     <div class="stars"></div>
     <div class="twinkling"></div>
 
-    <main class="dashboard-grid">
-      <section class="glass-panel outbound-panel">
-        <h2 class="panel-title">📡 OUTBOUND DIALER LIST</h2>
-        <div class="input-group">
-          <input type="text" id="phone-input" placeholder="+1 (555) 000-0000" />
-          <button id="btn-add-number" class="btn-small">ADD</button>
+    <main class="dashboard-wrapper">
+      <!-- SECCIÓN SUPERIOR: METRICAS ESTILO AV WEB -->
+      <section class="metrics-grid">
+        <div class="metric-card cyan">
+          <div class="metric-title">Ans. & VM 📞</div>
+          <div class="metric-value" id="count-ans">1,642</div>
         </div>
-        <ul id="numbers-list" class="numbers-list"></ul>
+        <div class="metric-card pink">
+          <div class="metric-title">Not. Ans. 📵</div>
+          <div class="metric-value" id="count-not">229</div>
+        </div>
+        <div class="metric-card green">
+          <div class="metric-title">Transferred 🔄</div>
+          <div class="metric-value" id="count-trans">47</div>
+        </div>
+        <div class="metric-card yellow">
+          <div class="metric-title">Busy 🚫</div>
+          <div class="metric-value" id="count-busy">0</div>
+        </div>
       </section>
 
-      <section class="glass-panel main-dialer">
-        <header>
-          <h1 class="neon-text">IVR CYBER <span>CONTROL</span></h1>
-          <p class="subtitle">Interactive Testing Console</p>
-        </header>
+      <div class="dashboard-grid">
+        <!-- SECCIÓN IZQUIERDA: GESTIÓN DE CONTACTOS -->
+        <section class="glass-panel left-panel">
+          <h2 class="panel-title">📡 OUTBOUND DIALER LIST</h2>
 
-        <div class="panel-header">
-          <span id="status-dot" class="status-dot offline"></span>
-          <span id="status-text">SYSTEM: IDLE (READY TO DIAL)</span>
-        </div>
-
-        <div class="simulator-display">
-          <div id="terminal-text" class="terminal-text">
-            [SYSTEM] Select an outbound number or press CALL to initiate...
+          <!-- INPUT CORREGIDO Y ASEGURADO -->
+          <div class="input-group">
+            <input
+              type="text"
+              id="phone-input"
+              placeholder="+1 (555) 000-0000"
+            />
+            <button id="btn-add-number" class="btn-small">ADD</button>
           </div>
-        </div>
+          <ul id="numbers-list" class="numbers-list">
+            <!-- Se llena dinámicamente -->
+          </ul>
 
-        <div class="keypad">
-          <button class="key-btn" data-key="1">1<small>🌐</small></button>
-          <button class="key-btn" data-key="2">2<small>ABC</small></button>
-          <button class="key-btn" data-key="3">3<small>DEF</small></button>
-          <button class="key-btn" data-key="4">4<small>GHI</small></button>
-          <button class="key-btn" data-key="5">5<small>JKL</small></button>
-          <button class="key-btn" data-key="6">6<small>MNO</small></button>
-          <button class="key-btn" data-key="7">7<small>PQRS</small></button>
-          <button class="key-btn" data-key="8">8<small>TUV</small></button>
-          <button class="key-btn" data-key="9">9<small>WXYZ</small></button>
-          <button class="key-btn" data-key="*">*</button>
-          <button class="key-btn" data-key="0">0</button>
-          <button class="key-btn" data-key="#">#</button>
-        </div>
+          <!-- SECCIÓN EXTRAS ESTILO AV WEB (UPLOAD LEADS) -->
+          <div class="lead-upload-box">
+            <h3 class="mini-title">UPLOAD YOUR LEAD</h3>
+            <div class="upload-area">
+              <span class="upload-icon">📁</span>
+              <p>Drag or choose a .csv file</p>
+            </div>
+          </div>
+        </section>
 
-        <div class="action-zone">
-          <button id="btn-llamar" class="btn-action call">
-            <span>CALL</span>
-          </button>
-          <button id="btn-colgar" class="btn-action hangup" disabled>
-            <span>HANG UP</span>
-          </button>
-        </div>
-      </section>
+        <!-- SECCIÓN DERECHA: DIALER PRINCIPAL -->
+        <section class="glass-panel main-dialer">
+          <header>
+            <h1 class="neon-text">IVR CYBER <span>CONTROL</span></h1>
+            <p class="subtitle">Interactive Testing Console</p>
+          </header>
+
+          <div class="panel-header">
+            <span id="status-dot" class="status-dot offline"></span>
+            <span id="status-text">SYSTEM: IDLE (READY TO DIAL)</span>
+          </div>
+
+          <div class="simulator-display">
+            <div id="terminal-text" class="terminal-text">
+              [SYSTEM] Select an outbound number or press CALL to initiate...
+            </div>
+          </div>
+
+          <!-- TECLADO NUMÉRICO INTERACTIVO -->
+          <div class="keypad">
+            <button class="key-btn" data-key="1">1<small>🌐</small></button>
+            <button class="key-btn" data-key="2">2<small>ABC</small></button>
+            <button class="key-btn" data-key="3">3<small>DEF</small></button>
+            <button class="key-btn" data-key="4">4<small>GHI</small></button>
+            <button class="key-btn" data-key="5">5<small>JKL</small></button>
+            <button class="key-btn" data-key="6">6<small>MNO</small></button>
+            <button class="key-btn" data-key="7">7<small>PQRS</small></button>
+            <button class="key-btn" data-key="8">8<small>TUV</small></button>
+            <button class="key-btn" data-key="9">9<small>WXYZ</small></button>
+            <button class="key-btn" data-key="*">*</button>
+            <button class="key-btn" data-key="0">0</button>
+            <button class="key-btn" data-key="#">#</button>
+          </div>
+
+          <!-- ACCIONES PRINCIPALES: LLAMAR Y COLGAR -->
+          <div class="action-zone">
+            <button id="btn-llamar" class="btn-action call">
+              <span>CALL</span>
+            </button>
+            <button id="btn-colgar" class="btn-action hangup" disabled>
+              <span>HANG UP</span>
+            </button>
+          </div>
+        </section>
+      </div>
     </main>
 
     <script type="module" src="main.js"></script>
