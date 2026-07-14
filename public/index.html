@@ -3,42 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🛸 IVR System - Cyber Control Panel</title>
+    <title>🛸 IVR Cyber Dialer & Controller</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="stars"></div>
     <div class="twinkling"></div>
 
-    <main class="matrix-container">
-      <header>
-        <h1 class="neon-text">IVR CYBER <span>SYSTEM</span></h1>
-        <p class="subtitle">Interactive Voice Response Platform & Validator</p>
-      </header>
+    <main class="dashboard-grid">
+      <section class="glass-panel outbound-panel">
+        <h2 class="panel-title">📡 OUTBOUND DIALER LIST</h2>
+        <div class="input-group">
+          <input type="text" id="phone-input" placeholder="+1 (555) 000-0000" />
+          <button id="btn-add-number" class="btn-small">ADD</button>
+        </div>
+        <ul id="numbers-list" class="numbers-list"></ul>
+      </section>
 
-      <section class="glass-panel">
+      <section class="glass-panel main-dialer">
+        <header>
+          <h1 class="neon-text">IVR CYBER <span>CONTROL</span></h1>
+          <p class="subtitle">Interactive Testing Console</p>
+        </header>
+
         <div class="panel-header">
-          <span class="status-dot pulsing"></span>
-          <p>SYSTEM STATUS: ONLINE</p>
+          <span id="status-dot" class="status-dot offline"></span>
+          <span id="status-text">SYSTEM: IDLE (READY TO DIAL)</span>
         </div>
 
         <div class="simulator-display">
           <div id="terminal-text" class="terminal-text">
-            [SYSTEM] Ready for deployment. Click a button to test the IVR
-            pipeline flow...
+            [SYSTEM] Select an outbound number or press CALL to initiate...
           </div>
         </div>
 
-        <!-- Botones con efecto cristalino y líquido por defecto -->
+        <div class="keypad">
+          <button class="key-btn" data-key="1">1<small>🌐</small></button>
+          <button class="key-btn" data-key="2">2<small>ABC</small></button>
+          <button class="key-btn" data-key="3">3<small>DEF</small></button>
+          <button class="key-btn" data-key="4">4<small>GHI</small></button>
+          <button class="key-btn" data-key="5">5<small>JKL</small></button>
+          <button class="key-btn" data-key="6">6<small>MNO</small></button>
+          <button class="key-btn" data-key="7">7<small>PQRS</small></button>
+          <button class="key-btn" data-key="8">8<small>TUV</small></button>
+          <button class="key-btn" data-key="9">9<small>WXYZ</small></button>
+          <button class="key-btn" data-key="*">*</button>
+          <button class="key-btn" data-key="0">0</button>
+          <button class="key-btn" data-key="#">#</button>
+        </div>
+
         <div class="action-zone">
-          <button id="btn-iniciar" class="btn-liquid-crystal">
-            <span>INICIAR LLAMADA (WEBHOOK)</span>
+          <button id="btn-llamar" class="btn-action call">
+            <span>CALL</span>
+          </button>
+          <button id="btn-colgar" class="btn-action hangup" disabled>
+            <span>HANG UP</span>
           </button>
         </div>
       </section>
     </main>
 
-    <!-- Conexión modular estricta -->
     <script type="module" src="main.js"></script>
   </body>
 </html>
